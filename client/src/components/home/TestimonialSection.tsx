@@ -25,7 +25,7 @@ const TestimonialSection = () => {
   };
 
   return (
-    <section className="testimonial-section py-20 bg-white">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">What Our Clients Say</h2>
@@ -44,6 +44,7 @@ const TestimonialSection = () => {
               <div 
                 ref={scrollContainerRef} 
                 className="flex overflow-x-auto pb-8 -mx-4 px-4 snap-x snap-mandatory scroll-smooth hide-scrollbar"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {testimonials && testimonials.length > 0 ? (
                   testimonials.map((testimonial) => (
@@ -80,6 +81,12 @@ const TestimonialSection = () => {
                 </div>
               )}
             </div>
+            
+            <style jsx>{`
+              .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
           </>
         )}
       </div>
