@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
+import { MapPin, Ruler, LayoutGrid, Trees } from "lucide-react";
 import { Property } from "@shared/schema";
 
 interface PropertyCardProps {
@@ -31,11 +32,16 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     }
   };
 
+  // Default image if none available
+  const imageUrl = images && images.length > 0 
+    ? images[0] 
+    : "https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=300&q=80";
+
   return (
     <Card className="property-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
       <div className="relative">
         <img 
-          src={images[0]} 
+          src={imageUrl} 
           alt={title} 
           className="w-full h-56 object-cover"
         />
@@ -62,32 +68,30 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           <span className="text-primary font-bold">{formatPrice(price)}</span>
         </div>
         
-        <p className="text-gray-500 mb-4">
-          <i className="fas fa-map-marker-alt mr-2"></i>{location}
+        <p className="text-gray-500 mb-4 flex items-center">
+          <MapPin className="h-4 w-4 mr-2" /> {location}
         </p>
         
         <div className="flex justify-between text-sm text-gray-600 mb-6">
-          <span>
-            <i className="fas fa-ruler-combined mr-1"></i> {size} {sizeUnit}
+          <span className="flex items-center">
+            <Ruler className="h-4 w-4 mr-1" /> {size} {sizeUnit}
           </span>
           {features && features.length > 0 && (
             <>
-              <span>
-                <i className="fas fa-road mr-1"></i> {features[0]}
+              <span className="flex items-center">
+                <LayoutGrid className="h-4 w-4 mr-1" /> {features[0]}
               </span>
               {features.length > 1 && (
-                <span>
-                  <i className="fas fa-leaf mr-1"></i> {features[1]}
+                <span className="flex items-center">
+                  <Trees className="h-4 w-4 mr-1" /> {features[1]}
                 </span>
               )}
             </>
           )}
         </div>
         
-        <Link href={`/properties/${id}`}>
-          <a className="block text-center bg-white text-primary border border-primary py-2 rounded-md hover:bg-primary hover:text-white transition">
-            View Details
-          </a>
+        <Link href={`/properties/${id}`} className="block text-center bg-white text-primary border border-primary py-2 rounded-md hover:bg-primary hover:text-white transition">
+          View Details
         </Link>
       </CardContent>
     </Card>

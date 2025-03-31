@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Link } from "wouter";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PropertyCard from "@/components/ui/property-card";
 import { Property } from "@shared/schema";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import useEmblaCarousel from 'embla-carousel-react';
 
 const PropertySection = () => {
   const [activeTab, setActiveTab] = useState("all");
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start', containScroll: 'trimSnaps' });
   
   const { data: properties, isLoading, error } = useQuery<Property[]>({
     queryKey: ['/api/properties'],
@@ -17,6 +20,14 @@ const PropertySection = () => {
     if (activeTab === "all") return true;
     return property.propertyType === activeTab;
   });
+  
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
 
   return (
     <section className="py-16 bg-[#F8F8F8]" id="properties">
@@ -34,9 +45,6 @@ const PropertySection = () => {
             <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-white">
               All Properties
             </TabsTrigger>
-            <TabsTrigger value="Residential" className="data-[state=active]:bg-primary data-[state=active]:text-white">
-              Residential Plots
-            </TabsTrigger>
             <TabsTrigger value="Agricultural" className="data-[state=active]:bg-primary data-[state=active]:text-white">
               Agricultural Land
             </TabsTrigger>
@@ -46,20 +54,47 @@ const PropertySection = () => {
           </TabsList>
         </Tabs>
 
-        {/* Property listings */}
+        {/* Property listings carousel */}
         {isLoading ? (
           <div className="text-center py-10">Loading properties...</div>
         ) : error ? (
           <div className="text-center py-10 text-red-500">Error loading properties</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProperties && filteredProperties.length > 0 ? (
-              filteredProperties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-10">
-                No properties found. Please try another filter.
+          <div className="relative">
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {filteredProperties && filteredProperties.length > 0 ? (
+                  filteredProperties.map((property) => (
+                    <div key={property.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] pl-4">
+                      <PropertyCard property={property} />
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex-full text-center py-10 px-4">
+                    No properties found. Please try another filter.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {filteredProperties && filteredProperties.length > 1 && (
+              <div className="flex justify-between mt-6">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white"
+                  onClick={scrollPrev}
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  className="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white"
+                  onClick={scrollNext}
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
               </div>
             )}
           </div>
