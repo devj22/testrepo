@@ -64,7 +64,7 @@ const ContactSection = () => {
   }
 
   return (
-    <section className="py-20 bg-[#F8F8F8]" id="contact">
+    <section className="contact-section py-20 bg-[#F8F8F8]" id="contact">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-stretch gap-12">
           <div className="lg:w-1/2 bg-white p-8 rounded-lg shadow-md">

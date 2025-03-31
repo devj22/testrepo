@@ -6,6 +6,7 @@ import TestimonialSection from "@/components/home/TestimonialSection";
 import ContactSection from "@/components/home/ContactSection";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import WelcomeTour from "@/components/WelcomeTour";
 
 const HomePage = () => {
   return (
@@ -20,6 +21,7 @@ const HomePage = () => {
         <ContactSection />
       </main>
       <Footer />
+      <WelcomeTour />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 const HeroSection = () => {
   return (
     <header 
-      className="pt-24 bg-cover bg-center h-screen flex items-center relative" 
+      className="hero-section pt-24 bg-cover bg-center h-screen flex items-center relative" 
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1628624747186-a941c476b7ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80')`
       }}

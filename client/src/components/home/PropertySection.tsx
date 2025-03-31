@@ -30,7 +30,7 @@ const PropertySection = () => {
   }, [emblaApi]);
 
   return (
-    <section className="py-16 bg-[#F8F8F8]" id="properties">
+    <section className="property-section py-16 bg-[#F8F8F8]" id="properties">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Featured Properties</h2>
