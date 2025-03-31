@@ -71,7 +71,14 @@ const PropertyDetailPage = () => {
   
   const scrollToDetails = () => {
     if (detailsRef.current) {
-      detailsRef.current.scrollIntoView({ behavior: 'smooth' });
+      const yOffset = -20; // Add a small offset to account for any fixed headers
+      const element = detailsRef.current;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      
+      window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -138,14 +145,14 @@ const PropertyDetailPage = () => {
                   </Carousel>
                   
                   {property.videoUrl && (
-                    <div className="flex justify-center mt-4">
+                    <div className="flex justify-center mt-4 mb-2">
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="flex items-center gap-1 text-sm"
+                        className="flex items-center gap-1 text-sm shadow-md hover:shadow-lg hover:bg-primary hover:text-white transition-all duration-300"
                         onClick={scrollToDetails}
                       >
-                        Watch Video <ChevronDown className="h-4 w-4" />
+                        <span className="font-medium">Watch Property Video</span> <ChevronDown className="h-4 w-4 ml-1 animate-bounce" />
                       </Button>
                     </div>
                   )}
@@ -212,8 +219,13 @@ const PropertyDetailPage = () => {
 
                 {/* Property Video */}
                 {property.videoUrl && (
-                  <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8" ref={detailsRef}>
-                    <h3 className="text-xl font-semibold mb-4">Property Video</h3>
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8 border-2 border-primary" ref={detailsRef}>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-xl font-semibold">Property Video</h3>
+                      <Badge variant="default" className="bg-primary text-white px-3 py-1">
+                        <i className="fas fa-video mr-2"></i> Video Tour
+                      </Badge>
+                    </div>
                     <div className="relative" style={{ paddingBottom: "56.25%" /* 16:9 Aspect Ratio */ }}>
                       <iframe 
                         src={getEmbedUrl(property.videoUrl)}
