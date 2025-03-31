@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute } from "wouter";
 import Navbar from "@/components/layout/Navbar";
@@ -15,10 +15,12 @@ import {
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { ChevronDown } from "lucide-react";
 
 const PropertyDetailPage = () => {
   const [match, params] = useRoute<{ id: string }>("/properties/:id");
   const propertyId = params?.id ? parseInt(params.id) : 0;
+  const detailsRef = useRef<HTMLDivElement>(null);
 
   const { data: property, isLoading, error } = useQuery<Property>({
     queryKey: [`/api/properties/${propertyId}`],
@@ -29,6 +31,49 @@ const PropertyDetailPage = () => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
+  
+  // Convert YouTube URL to embed format
+  const getEmbedUrl = (url: string | null): string => {
+    if (!url) return "";
+    
+    // Handle different YouTube URL formats
+    let videoId = "";
+    
+    // Regular YouTube URL: https://www.youtube.com/watch?v=VIDEO_ID
+    const regExpWatch = /^.*(youtu.be\/|v\/|u\/\w\/|watch\?v=|&v=)([^#&?]*).*/;
+    const matchWatch = url.match(regExpWatch);
+    
+    if (matchWatch && matchWatch[2].length === 11) {
+      videoId = matchWatch[2];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    
+    // Already an embed URL
+    const regExpEmbed = /^.*(youtube.com\/embed\/)([^#&?]*).*/;
+    const matchEmbed = url.match(regExpEmbed);
+    
+    if (matchEmbed && matchEmbed[2].length === 11) {
+      return url; // Already in correct format
+    }
+    
+    // Shortened youtu.be URL: https://youtu.be/VIDEO_ID
+    const regExpShort = /^.*(youtu.be\/)([^#&?]*).*/;
+    const matchShort = url.match(regExpShort);
+    
+    if (matchShort && matchShort[2].length === 11) {
+      videoId = matchShort[2];
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+    
+    // If no match, return original URL (fallback)
+    return url;
+  };
+  
+  const scrollToDetails = () => {
+    if (detailsRef.current) {
+      detailsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   // Format price in Indian currency format
   const formatPrice = (price?: number) => {
@@ -91,6 +136,19 @@ const PropertyDetailPage = () => {
                     <CarouselPrevious />
                     <CarouselNext />
                   </Carousel>
+                  
+                  {property.videoUrl && (
+                    <div className="flex justify-center mt-4">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex items-center gap-1 text-sm"
+                        onClick={scrollToDetails}
+                      >
+                        Watch Video <ChevronDown className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
 
                   {/* Property Details */}
                   <div className="p-6">
@@ -154,11 +212,11 @@ const PropertyDetailPage = () => {
 
                 {/* Property Video */}
                 {property.videoUrl && (
-                  <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8">
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8" ref={detailsRef}>
                     <h3 className="text-xl font-semibold mb-4">Property Video</h3>
                     <div className="relative" style={{ paddingBottom: "56.25%" /* 16:9 Aspect Ratio */ }}>
                       <iframe 
-                        src={property.videoUrl}
+                        src={getEmbedUrl(property.videoUrl)}
                         className="absolute top-0 left-0 w-full h-full rounded-md"
                         title="Property Video"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

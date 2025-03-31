@@ -389,12 +389,12 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
                   <FormLabel>YouTube Video URL</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="https://www.youtube.com/embed/VIDEO_ID" 
+                      placeholder="https://www.youtube.com/watch?v=VIDEO_ID" 
                       {...field} 
                     />
                   </FormControl>
                   <div className="text-xs text-muted-foreground mt-1">
-                    Use embed URL format: https://www.youtube.com/embed/VIDEO_ID
+                    Use regular YouTube URL format: https://www.youtube.com/watch?v=VIDEO_ID
                   </div>
                   <FormMessage />
                 </FormItem>
