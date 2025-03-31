@@ -25,6 +25,7 @@ export const properties = pgTable("properties", {
   sizeUnit: text("size_unit").notNull().default("Guntha"),
   features: text("features").array(),
   images: text("images").array(),
+  videoUrl: text("video_url").default(""),
   isFeatured: boolean("is_featured").default(false),
   propertyType: text("property_type").notNull(),
   createdAt: timestamp("created_at").defaultNow(),

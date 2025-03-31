@@ -245,6 +245,7 @@ export class MemStorage implements IStorage {
         sizeUnit: "Guntha",
         features: ["60 ft Road", "BMRDA Approved", "Corner Plot"],
         images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=300&q=80"],
+        videoUrl: "https://www.youtube.com/embed/EngW7tLk6R8",
         isFeatured: true,
         propertyType: "Residential"
       },
@@ -257,6 +258,7 @@ export class MemStorage implements IStorage {
         sizeUnit: "Acres",
         features: ["Borewell", "Fertile Soil", "Road Access"],
         images: ["https://images.unsplash.com/photo-1628744404730-5e143358539b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=300&q=80"],
+        videoUrl: "https://www.youtube.com/embed/1PBNBnU7b5s",
         isFeatured: false,
         propertyType: "Agricultural"
       },

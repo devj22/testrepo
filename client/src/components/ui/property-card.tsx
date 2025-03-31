@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Ruler, LayoutGrid, Trees } from "lucide-react";
+import { MapPin, Ruler, LayoutGrid, Trees, Video } from "lucide-react";
 import { Property } from "@shared/schema";
 
 interface PropertyCardProps {
@@ -17,6 +17,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     sizeUnit, 
     features, 
     images, 
+    videoUrl,
     isFeatured,
     propertyType 
   } = property;
@@ -58,6 +59,11 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         {propertyType === "Commercial" && (
           <span className="absolute top-4 left-4 bg-[#333333] text-white text-sm font-medium px-3 py-1 rounded-md">
             Commercial
+          </span>
+        )}
+        {videoUrl && (
+          <span className="absolute top-4 right-4 bg-red-600 text-white text-sm font-medium px-3 py-1 rounded-md flex items-center">
+            <Video className="h-3 w-3 mr-1" /> Video
           </span>
         )}
       </div>

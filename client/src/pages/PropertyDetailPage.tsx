@@ -152,6 +152,22 @@ const PropertyDetailPage = () => {
                   </div>
                 </div>
 
+                {/* Property Video */}
+                {property.videoUrl && (
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8">
+                    <h3 className="text-xl font-semibold mb-4">Property Video</h3>
+                    <div className="relative" style={{ paddingBottom: "56.25%" /* 16:9 Aspect Ratio */ }}>
+                      <iframe 
+                        src={property.videoUrl}
+                        className="absolute top-0 left-0 w-full h-full rounded-md"
+                        title="Property Video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
+
                 {/* Map Section */}
                 <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8">
                   <h3 className="text-xl font-semibold mb-4">Location Map</h3>

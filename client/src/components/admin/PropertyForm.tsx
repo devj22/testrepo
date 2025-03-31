@@ -37,6 +37,7 @@ const propertyFormSchema = insertPropertySchema.extend({
   size: z.coerce.number().positive("Size must be positive"),
   featuresString: z.string().optional(),
   imagesString: z.string(),
+  videoUrl: z.string().optional(),
 });
 
 type PropertyFormValues = Omit<z.infer<typeof propertyFormSchema>, "features" | "images"> & {
@@ -82,6 +83,7 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
       sizeUnit: property?.sizeUnit || "Guntha",
       featuresString: featuresToString(property?.features),
       imagesString: imagesToString(property?.images),
+      videoUrl: property?.videoUrl || "",
       isFeatured: property?.isFeatured || false,
       propertyType: property?.propertyType || "Residential",
     },
@@ -99,6 +101,7 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
         sizeUnit: property.sizeUnit,
         featuresString: featuresToString(property.features),
         imagesString: imagesToString(property.images),
+        videoUrl: property.videoUrl || "",
         isFeatured: property.isFeatured,
         propertyType: property.propertyType,
       });
@@ -373,6 +376,26 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
                       {...field} 
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="videoUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>YouTube Video URL</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="https://www.youtube.com/embed/VIDEO_ID" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Use embed URL format: https://www.youtube.com/embed/VIDEO_ID
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
