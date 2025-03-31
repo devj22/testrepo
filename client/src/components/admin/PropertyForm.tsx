@@ -187,7 +187,8 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="max-h-[60vh] overflow-y-auto pr-2 pb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="title"
@@ -402,6 +403,7 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
                 </FormItem>
               )}
             />
+            </div>
 
             <CardFooter className="px-0 pt-6">
               <Button 
