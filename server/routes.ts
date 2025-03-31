@@ -9,6 +9,7 @@ import {
   insertTestimonialSchema 
 } from "@shared/schema";
 import { z } from "zod";
+import bcrypt from 'bcrypt';
 
 // Simple JWT implementation for admin authentication
 import jwt from 'jsonwebtoken';
@@ -60,7 +61,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const user = await storage.getUserByUsername(username);
       
-      if (!user || user.password !== password) {
+      if (!user) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+      
+      // Compare the provided password with the hashed password in the database
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      
+      if (!isPasswordValid) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
       

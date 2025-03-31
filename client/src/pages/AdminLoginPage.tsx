@@ -134,7 +134,7 @@ const AdminLoginPage = () => {
           </CardContent>
           <CardFooter className="flex flex-col">
             <p className="text-xs text-gray-500 mt-4 text-center">
-              For demo purposes, use username: <span className="font-semibold">admin</span> and password: <span className="font-semibold">admin123</span>
+              For demo purposes, use username: <span className="font-semibold">admin</span> and password: <span className="font-semibold">Naina@32145</span>
             </p>
             <Button 
               variant="link" 

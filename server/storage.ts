@@ -6,6 +6,7 @@ import {
   type Message, type InsertMessage,
   type Testimonial, type InsertTestimonial
 } from "@shared/schema";
+import bcrypt from 'bcrypt';
 
 export interface IStorage {
   // User methods
@@ -73,7 +74,7 @@ export class MemStorage implements IStorage {
     // Initialize with admin user
     this.createUser({
       username: "admin",
-      password: "admin123" // In a real app, this would be hashed
+      password: "Naina@32145" // Will be hashed in the createUser method
     });
     
     // Add sample data
@@ -93,7 +94,9 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.userCurrentId++;
-    const user: User = { ...insertUser, id };
+    // Hash the password using bcrypt with a salt of 10 rounds
+    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+    const user: User = { ...insertUser, password: hashedPassword, id };
     this.users.set(id, user);
     return user;
   }
