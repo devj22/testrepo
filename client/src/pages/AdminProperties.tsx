@@ -188,7 +188,7 @@ const AdminProperties = () => {
       
       {/* Add Property Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Add New Property</DialogTitle>
           </DialogHeader>
@@ -201,7 +201,7 @@ const AdminProperties = () => {
       
       {/* Edit Property Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Edit Property</DialogTitle>
           </DialogHeader>
