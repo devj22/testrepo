@@ -385,16 +385,18 @@ const PropertyForm = ({ property, mode, onSuccess }: PropertyFormProps) => {
               control={form.control}
               name="videoUrl"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>YouTube Video URL</FormLabel>
+                <FormItem className="mb-6">
+                  <FormLabel className="text-base font-medium">YouTube Video URL</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="https://www.youtube.com/watch?v=VIDEO_ID" 
+                      className="w-full"
                       {...field} 
                     />
                   </FormControl>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    Use regular YouTube URL format: https://www.youtube.com/watch?v=VIDEO_ID
+                  <div className="text-sm text-muted-foreground mt-2 p-2 bg-gray-50 rounded-md border border-gray-100">
+                    <p className="mb-1">✓ Use regular YouTube URL format, for example:</p>
+                    <code className="text-xs bg-gray-100 p-1 rounded">https://www.youtube.com/watch?v=VIDEO_ID</code>
                   </div>
                   <FormMessage />
                 </FormItem>
