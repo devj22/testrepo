@@ -1,4 +1,26 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { getAuthHeader } from "./auth";
+
+// Helper to determine if we're in production or development
+const isProd = import.meta.env.PROD;
+
+// Use the proper base URL depending on environment
+const getBaseUrl = () => {
+  return isProd ? '' : '';
+};
+
+// Transform an API URL to include the proper prefix in production
+export const getApiUrl = (path: string): string => {
+  const apiPath = path.startsWith('/api') ? path : `/api${path}`;
+  
+  if (isProd) {
+    // In production, use the Netlify functions path
+    return `/.netlify/functions/api${apiPath.replace('/api', '')}`;
+  }
+  
+  // In development, use the path as is
+  return apiPath;
+};
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -12,9 +34,17 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  const apiUrl = getApiUrl(url);
+  const authHeader = getAuthHeader();
+  
+  const headers: Record<string, string> = {
+    ...(data ? { "Content-Type": "application/json" } : {}),
+    ...authHeader
+  };
+
+  const res = await fetch(apiUrl, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -29,8 +59,15 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey[0] as string, {
+    const url = queryKey[0] as string;
+    const apiUrl = getApiUrl(url);
+    const authHeader = getAuthHeader();
+    
+    const res = await fetch(apiUrl, {
       credentials: "include",
+      headers: {
+        ...authHeader
+      }
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
